@@ -5,9 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Users, DollarSign } from "lucide-react";
 import { IRoom } from "@/types";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface RoomCardProps {
   room: IRoom;
@@ -44,9 +46,12 @@ const RoomCard = ({ room, onBook }: RoomCardProps) => {
       </div>
 
       <CardFooter>
-        <Button onClick={() => onBook(room)} className="w-full">
+        <Link
+          href={`/rooms/${room._id}`}
+          className={cn(buttonVariants(), "w-full")}
+        >
           Book Room
-        </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

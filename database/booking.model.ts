@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const bookingSchema = new mongoose.Schema(
+const BookingSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +33,7 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-bookingSchema.index({ room: 1, date: 1 }, { unique: true });
+BookingSchema.index({ room: 1, date: 1 }, { unique: true });
 
 export default mongoose.models.Booking ||
-  mongoose.model("Booking", bookingSchema);
+  mongoose.model("Booking", BookingSchema);

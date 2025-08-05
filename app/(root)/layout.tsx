@@ -11,7 +11,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="w-full">
       <Navbar />
       <main className="w-full flex items-center justify-center flex-col">
-        <div className="w-[60%]">{children}</div>
+        <div className="w-[70%]">{children}</div>
       </main>
       {status === "unauthenticated" && <AuthModal />}
     </div>

@@ -25,3 +25,14 @@ export const registerSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters." }),
 });
+export const roomSchema = z.object({
+  name: z.string().min(2).max(50),
+  capacity: z.string(),
+  price: z.string(),
+  description: z.string().min(10).max(200),
+});
+export const deleteSchema = z.object({
+  confirmText: z.string().refine((val) => val === "DELETE", {
+    message: "You must type 'delete' to confirm.",
+  }),
+});

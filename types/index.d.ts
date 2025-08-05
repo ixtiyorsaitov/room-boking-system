@@ -1,7 +1,11 @@
+import { ROLE } from "./role";
+
 export interface IUser {
   _id: string;
   email: string;
   fullName: string;
+  role: ROLE;
+  bookings: number;
   profileImage: string;
 }
 export interface IRoom {

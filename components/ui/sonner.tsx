@@ -19,7 +19,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       toastOptions={{
         classNames: {
-          toast: "!rounded-none",
+          toast: "!rounded-none font-poppins",
         },
       }}
       {...props}

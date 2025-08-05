@@ -29,16 +29,9 @@ export default function RootLayout({
         className={`${poppins.className} ${poppins.variable} antialiased`}
       >
         <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextTopLoader color="hsl(25 75% 55%)" />
-            <Toaster />
-            {children}
-          </ThemeProvider>
+          <NextTopLoader color="hsl(25 75% 55%)" />
+          <Toaster />
+          {children}
         </Providers>
       </body>
     </html>
