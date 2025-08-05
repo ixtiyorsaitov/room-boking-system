@@ -13,12 +13,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-import { cn } from "@/lib/utils"; // Agar `cn()` sizda mavjud bo'lmasa, oddiy className string qo‘shishni ishlating
+import { cn } from "@/lib/utils";
 import { useAuthModal } from "@/hooks/use-auth-modal";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
-  const [isLogged, setIsLogged] = useState(false);
+  const { data: session, status } = useSession();
+
   const authModal = useAuthModal();
   const pathname = usePathname();
 
@@ -56,7 +57,7 @@ const Navbar = () => {
             </Button>
           </Link>
 
-          {isLogged ? (
+          {status === "authenticated" ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -65,10 +66,12 @@ const Navbar = () => {
                 >
                   <Avatar className="h-8 w-8">
                     <AvatarImage
-                      src="/placeholder.svg?height=32&width=32"
+                      src={session.currentUser.profileImage}
                       alt="User Avatar"
                     />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback className="uppercase">
+                      {session.currentUser.fullName.split(" ").map((c) => c[0])}
+                    </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
@@ -82,7 +85,7 @@ const Navbar = () => {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>

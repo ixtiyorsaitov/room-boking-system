@@ -4,6 +4,7 @@ import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme.provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/components/providers/providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -27,16 +28,18 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${poppins.className} ${poppins.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextTopLoader />
-          <Toaster />
-          {children}
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NextTopLoader />
+            <Toaster />
+            {children}
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
