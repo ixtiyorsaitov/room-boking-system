@@ -5,11 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Users, DollarSign } from "lucide-react";
 import { IRoom } from "@/types";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { useAuthModal } from "@/hooks/use-auth-modal";
 
 interface RoomCardProps {
   room: IRoom;
@@ -17,6 +17,8 @@ interface RoomCardProps {
 }
 
 const RoomCard = ({ room, onBook }: RoomCardProps) => {
+  const authModal = useAuthModal();
+  const { status } = useSession();
   return (
     <Card className="h-full flex flex-col justify-between transition-all duration-200 hover:shadow-[var(--shadow-elegant)] hover:-translate-y-1 bg-card">
       <div className="flex-1">
@@ -33,6 +35,10 @@ const RoomCard = ({ room, onBook }: RoomCardProps) => {
             <Users className="h-4 w-4" />
             <span className="text-sm">Capacity: {room.capacity} people</span>
           </div>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Users className="h-4 w-4" />
+            <span className="text-sm">Booked: {room.capacity} people</span>
+          </div>
 
           <div className="flex items-center gap-2 text-luxury font-semibold">
             <DollarSign className="h-5 w-5" />
@@ -46,12 +52,18 @@ const RoomCard = ({ room, onBook }: RoomCardProps) => {
       </div>
 
       <CardFooter>
-        <Link
-          href={`/rooms/${room._id}`}
-          className={cn(buttonVariants(), "w-full")}
+        <Button
+          onClick={() => {
+            if (status === "authenticated") {
+              onBook(room);
+            } else {
+              authModal.setOpen(true);
+            }
+          }}
+          className="w-full"
         >
           Book Room
-        </Link>
+        </Button>
       </CardFooter>
     </Card>
   );

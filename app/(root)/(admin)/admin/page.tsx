@@ -2,13 +2,8 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building, Calendar, Users } from "lucide-react";
-import { MockRooms } from "@/lib/constants";
 import UsersList from "../_components/users-list";
 import BookingsList from "../_components/bookings-list";
-import Overview from "../_components/overview";
-import { useState } from "react";
-import { IRoom } from "@/types";
-import ManageRoomModal from "@/components/modals/manage.room.modal";
 import RoomsList from "../_components/rooms-list";
 
 const AdminPage = () => {

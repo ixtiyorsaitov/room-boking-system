@@ -2,15 +2,18 @@
 
 import RoomCard from "@/components/core/room-card";
 import BookingModal from "@/components/modals/booking.modal";
+import api from "@/lib/axios";
 import { MockRooms } from "@/lib/constants";
 import { bookingSchema } from "@/lib/validations";
 import { IRoom } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 import { Building2 } from "lucide-react";
 import { useState } from "react";
 import z from "zod";
 
 const BookingsPage = () => {
-  const [loading, setLoading] = useState(false);
+  const [rooms, setRooms] = useState<IRoom[]>([]);
+
   const [selectedRoom, setSelectedRoom] = useState<IRoom | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
@@ -29,6 +32,17 @@ const BookingsPage = () => {
     setBookingSuccess(true);
   };
 
+  const { isPending } = useQuery({
+    queryKey: ["rooms"],
+    queryFn: async () => {
+      const { data: response } = await api.get("/rooms");
+      setRooms(response);
+      console.log(response);
+
+      return response;
+    },
+  });
+
   return (
     <div className="space-y-8 mt-3">
       <div className="text-center space-y-4">
@@ -43,9 +57,13 @@ const BookingsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {MockRooms.map((room) => (
-          <RoomCard onBook={handleBook} key={room._id} room={room} />
-        ))}
+        {isPending ? (
+          <>Loading...</>
+        ) : (
+          rooms.map((room) => (
+            <RoomCard onBook={handleBook} key={room._id} room={room} />
+          ))
+        )}
       </div>
 
       {selectedRoom && (
@@ -53,7 +71,7 @@ const BookingsPage = () => {
           success={bookingSuccess}
           room={selectedRoom}
           open={bookingModalOpen}
-          loading={loading}
+          loading={false}
           setOpen={setBookingModalOpen}
           onSubmit={handleBookingSubmit}
           onCancel={handleCancel}
