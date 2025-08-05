@@ -52,7 +52,10 @@ export const AuthModal = () => {
       }
     },
     onError: (error) => {
-      console.error("Registration failed:", error);
+      toast.error("Something went wrong", {
+        description: "Please try again later.",
+      });
+      console.error("Login failed:", error);
     },
   });
 
@@ -75,7 +78,10 @@ export const AuthModal = () => {
       authModal.setOpen(false);
     },
     onError: (error) => {
-      console.error("Registration failed:", error);
+      toast.error("Something went wrong", {
+        description: "Please try again later.",
+      });
+      console.error("Register failed:", error);
     },
   });
 
@@ -84,10 +90,6 @@ export const AuthModal = () => {
   };
   const onLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
     loginMutation.mutate(values);
-  };
-
-  const handleGoogleAuth = async () => {
-    await signIn("google");
   };
 
   return (
@@ -105,7 +107,7 @@ export const AuthModal = () => {
         <Button
           variant="outline"
           className="w-full bg-transparent"
-          onClick={handleGoogleAuth}
+          onClick={() => signIn("google")}
         >
           <Chrome className="mr-2 h-4 w-4" />
           Continue with Google
@@ -132,7 +134,6 @@ export const AuthModal = () => {
           <Button variant={"ghost"} onClick={() => authModal.setOpen(false)}>
             Cancel
           </Button>
-          <AlertDialogAction asChild></AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
