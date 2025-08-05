@@ -24,7 +24,7 @@ const AdminPage = () => {
       </div>
 
       <Tabs defaultValue="rooms" className="space-y-6 w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="rooms" className="gap-2">
             <Building className="h-4 w-4" />
             Rooms
@@ -37,14 +37,14 @@ const AdminPage = () => {
             <Calendar className="h-4 w-4" />
             Bookings
           </TabsTrigger>
-          <TabsTrigger value="overview" className="gap-2">
+          {/* <TabsTrigger value="overview" className="gap-2">
             Overview
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <RoomsList />
         <UsersList />
         <BookingsList />
-        <Overview />
+        {/* <Overview /> */}
       </Tabs>
     </div>
   );

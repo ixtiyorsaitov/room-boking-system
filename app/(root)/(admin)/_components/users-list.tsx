@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -45,7 +46,7 @@ const UsersList = () => {
             </TableHeader>
             <TableBody>
               {isPending ? (
-                <>Loading...</>
+                <UserListSkeleton />
               ) : (
                 data?.map((user) => (
                   <TableRow key={user._id}>
@@ -66,3 +67,23 @@ const UsersList = () => {
 };
 
 export default UsersList;
+
+export const UserListSkeleton = ({ count = 5 }: { count?: number }) => {
+  return (
+    <>
+      {Array.from({ length: count }).map((_, index) => (
+        <TableRow key={index}>
+          <TableCell className="font-medium">
+            <Skeleton className="h-4 w-[180px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[200px]" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-[60px]" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
+  );
+};
