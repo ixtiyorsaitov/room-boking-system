@@ -1,24 +1,94 @@
-import React from "react";
-import { Button } from "../ui/button";
-import { Building2, Calendar, Home } from "lucide-react";
+"use client";
+
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Building2, Calendar, Home, LogOut } from "lucide-react";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useState } from "react";
+import { cn } from "@/lib/utils"; // Agar `cn()` sizda mavjud bo'lmasa, oddiy className string qo‘shishni ishlating
 
 const Navbar = () => {
+  const [isLogged, setIsLogged] = useState(false);
+  const pathname = usePathname();
+
   return (
-    <div className="w-full flex items-center justify-center py-3 bg-white">
-      <div className="w-[60%] flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+    <div className="w-full flex items-center justify-center py-3 bg-white shadow-sm">
+      <div className="w-full max-w-6xl flex items-center justify-between px-4">
+        <Link href={"/"} className="flex items-center space-x-2">
           <Building2 className="h-8 w-8 text-primary" />
-          <h1 className="text-xl font-bold text-elegant">BookingR</h1>
-        </div>
-        <div className="flex items-center justify-end gap-2">
-          <Button>
-            <Home />
-            Rooms
-          </Button>
-          <Button variant={"ghost"}>
-            <Calendar />
-            Bookings
-          </Button>
+          <h1 className="text-xl font-bold text-gray-800">BookingR</h1>
+        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/">
+            <Button
+              variant="ghost"
+              className={cn(
+                "hidden md:flex items-center gap-2",
+                pathname === "/" && "bg-muted text-primary"
+              )}
+            >
+              <Home className="h-4 w-4" />
+              Rooms
+            </Button>
+          </Link>
+
+          <Link href="/bookings">
+            <Button
+              variant="ghost"
+              className={cn(
+                "hidden md:flex items-center gap-2",
+                pathname === "/bookings" && "bg-muted text-primary"
+              )}
+            >
+              <Calendar className="h-4 w-4" />
+              Bookings
+            </Button>
+          </Link>
+
+          {isLogged ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage
+                      src="/placeholder.svg?height=32&width=32"
+                      alt="User Avatar"
+                    />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">John Doe</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      john.doe@example.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button onClick={() => setIsLogged((prev) => !prev)}>Login</Button>
+          )}
         </div>
       </div>
     </div>

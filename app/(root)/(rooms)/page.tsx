@@ -3,14 +3,17 @@
 import RoomCard from "@/components/core/room-card";
 import BookingModal from "@/components/modals/booking.modal";
 import { MockRooms } from "@/lib/constants";
+import { bookingSchema } from "@/lib/validations";
 import { IRoom } from "@/types";
 import { Building2 } from "lucide-react";
 import { useState } from "react";
+import z from "zod";
 
 const BookingsPage = () => {
   const [loading, setLoading] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<IRoom | null>(null);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
   const handleBook = (room: IRoom) => {
     setSelectedRoom(room);
     setBookingModalOpen(true);
@@ -19,6 +22,11 @@ const BookingsPage = () => {
   const handleCancel = () => {
     setSelectedRoom(null);
     setBookingModalOpen(false);
+    setBookingSuccess(false);
+  };
+
+  const handleBookingSubmit = (values: z.infer<typeof bookingSchema>) => {
+    setBookingSuccess(true);
   };
 
   return (
@@ -42,11 +50,13 @@ const BookingsPage = () => {
 
       {selectedRoom && (
         <BookingModal
+          success={bookingSuccess}
           room={selectedRoom}
-          onCancel={handleCancel}
-          loading={loading}
           open={bookingModalOpen}
+          loading={loading}
           setOpen={setBookingModalOpen}
+          onSubmit={handleBookingSubmit}
+          onCancel={handleCancel}
         />
       )}
     </div>
