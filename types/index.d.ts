@@ -25,3 +25,11 @@ export interface BookingFormData {
   customerName: string;
   date: string;
 }
+
+export interface ChildProps {
+  children: React.ReactNode;
+}
+
+export interface IError extends Error {
+  response: { data: { message: string } };
+}

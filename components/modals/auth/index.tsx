@@ -21,52 +21,69 @@ import Login from "./login";
 import Register from "./register";
 import api from "@/lib/axios";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
 
 export const AuthModal = () => {
   const authModal = useAuthModal();
   const [isLogin, setIsLogin] = useState(true); // true = login, false = register
 
-  const onLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
-    const { data: response } = await api.post("/auth/login", values);
-    console.log(response);
-    if (!response.success) {
-      return toast.error("Error", { description: response.error });
-    }
+  const loginMutation = useMutation({
+    mutationFn: async (values: z.infer<typeof loginSchema>) => {
+      const { data: response } = await api.post("/auth/login", values);
 
-    const signInRes = await signIn("credentials", {
-      redirect: false,
-      email: values.email,
-      password: values.password,
-    });
-
-    if (signInRes?.ok) {
-      authModal.setOpen(false);
-    } else {
-      toast.error("Error", { description: "Login failed" });
-      console.error("Login failed:", signInRes?.error);
-    }
-  };
-
-  const onRegisterSubmit = async (values: z.infer<typeof registerSchema>) => {
-    try {
-      const { data: res } = await api.post("/auth/register", values);
-
-      if (!res.success) {
-        console.error("Registration error:", res.error);
-        return;
+      return { response, values };
+    },
+    onSuccess: async ({ response, values }) => {
+      if (!response.success) {
+        return toast.error("Error", { description: response.error });
       }
-      console.log(res);
 
-      await signIn("credentials", {
+      const signInRes = await signIn("credentials", {
         redirect: false,
         email: values.email,
         password: values.password,
       });
 
-      authModal.setOpen(false);
-    } catch (error) {
+      if (signInRes?.ok) {
+        authModal.setOpen(false);
+      } else {
+        toast.error("Error", { description: "Login failed" });
+        console.error("Login failed:", signInRes?.error);
+      }
+    },
+    onError: (error) => {
       console.error("Registration failed:", error);
-    }
+    },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: async (values: z.infer<typeof registerSchema>) => {
+      const { data: res } = await api.post("/auth/register", values);
+
+      return { res, values };
+    },
+    onSuccess: async ({ res, values }) => {
+      if (!res.success) {
+        console.error("Registration error:", res.error);
+        return;
+      }
+      await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+      });
+      authModal.setOpen(false);
+    },
+    onError: (error) => {
+      console.error("Registration failed:", error);
+    },
+  });
+
+  const onRegisterSubmit = async (values: z.infer<typeof registerSchema>) => {
+    registerMutation.mutate(values);
+  };
+  const onLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
+    loginMutation.mutate(values);
   };
 
   const handleGoogleAuth = async () => {
