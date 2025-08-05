@@ -27,15 +27,15 @@ export const authOptions: AuthOptions = {
     }),
 
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
     async signIn({ user, account }) {
       await connectToDatabase();
 
-      if (account?.provider === "google" || account?.provider === "github") {
+      if (account?.provider === "google") {
         const existingUser = await User.findOne({ email: user.email });
 
         if (!existingUser) {
@@ -43,7 +43,7 @@ export const authOptions: AuthOptions = {
 
           await User.create({
             email: user.email,
-            name,
+            fullName: name,
             profileImage: user.image,
             password: "",
           });
@@ -75,8 +75,8 @@ export const authOptions: AuthOptions = {
   },
 
   jwt: {
-    secret: process.env.NEXTAUTH_JWT_SECRET!,
+    secret: process.env.NEXT_PUBLIC_NEXTAUTH_JWT_SECRET!,
   },
 
-  secret: process.env.NEXTAUTH_SECRET!,
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET!,
 };

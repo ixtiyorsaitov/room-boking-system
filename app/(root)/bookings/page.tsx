@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MockRooms } from "@/lib/constants";
 import { Building2, Calendar, Clock, User } from "lucide-react";
+import Link from "next/link";
 
 const BookingsPage = () => {
   return (
@@ -28,13 +29,13 @@ const BookingsPage = () => {
             Ready to plan your stay? Browse our beautiful rooms and make your
             first reservation.
           </p>
-          <a
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
           >
             <Building2 className="h-4 w-4" />
             View Available Rooms
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

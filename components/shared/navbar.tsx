@@ -15,9 +15,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { cn } from "@/lib/utils"; // Agar `cn()` sizda mavjud bo'lmasa, oddiy className string qo‘shishni ishlating
+import { useAuthModal } from "@/hooks/use-auth-modal";
 
 const Navbar = () => {
   const [isLogged, setIsLogged] = useState(false);
+  const authModal = useAuthModal();
   const pathname = usePathname();
 
   return (
@@ -87,7 +89,7 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button onClick={() => setIsLogged((prev) => !prev)}>Login</Button>
+            <Button onClick={() => authModal.setOpen(true)}>Login</Button>
           )}
         </div>
       </div>
