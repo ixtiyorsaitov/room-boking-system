@@ -5,73 +5,147 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import api from "@/lib/axios";
 import { IBooking } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Building2, Calendar, Clock, User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { format } from "date-fns";
 import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
+import DeleteBookingModal from "@/components/modals/delete.booking.modal";
+import { useDeleteBooking } from "@/hooks/use-delete-booking";
+import { toast } from "sonner";
 
 const BookingsPage = () => {
-  const { isPending, data } = useQuery({
-    queryKey: ["bookings"],
+  const deleteBookingModal = useDeleteBooking();
+  const { data: session } = useSession();
+  const [datas, setDatas] = useState<IBooking[]>([]);
+
+  const [filterType, setFilterType] = useState<"all" | "my">("all");
+
+  const { isPending } = useQuery({
+    queryKey: ["bookings", filterType, session?.currentUser._id],
     queryFn: async () => {
-      const { data: response } = await api.get<IBooking[]>("/bookings");
-      console.log(response);
+      const { data: response } = await api.get<IBooking[]>(
+        filterType === "my" ? `/bookings?filter=own` : "/bookings"
+      );
+      setDatas(response);
 
       return response;
     },
   });
 
-  return (
-    <div className="space-y-8 mt-3">
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-3">
-          <Calendar className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-bold text-elegant">Bookings</h1>
-        </div>
-        {isPending ? (
-          <div className="w-full flex items-center justify-center">
-            <Skeleton className="w-1/5 h-3" />
-          </div>
-        ) : data ? (
-          <p className="text-lg text-muted-foreground">
-            {data.length > 0
-              ? `You have ${data?.length} booking${true ? "s" : ""}`
-              : "No bookings yet. Start by browsing our available rooms!"}
-          </p>
-        ) : null}
-      </div>
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const { data: response } = await api.delete(
+        `/bookings/${deleteBookingModal.initialBooking?._id}`
+      );
+      console.log(response);
 
-      {false ? (
-        <div className="text-center py-16">
-          <Building2 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-elegant mb-2">
-            No bookings found
-          </h3>
-          <p className="text-muted-foreground mb-6">
-            Ready to plan your stay? Browse our beautiful rooms and make your
-            first reservation.
-          </p>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
-          >
-            <Building2 className="h-4 w-4" />
-            View Available Rooms
-          </Link>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      return response;
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        setDatas((prev) =>
+          prev.filter((c) => c._id !== deleteBookingModal.initialBooking?._id)
+        );
+        deleteBookingModal.setInitialBooking(null);
+        deleteBookingModal.setOpen(false);
+        toast.success("Booking deleted successfuly!");
+      } else {
+        toast.error(response.error);
+      }
+    },
+  });
+
+  const handleDelete = () => {
+    console.log("deleteing");
+    if (deleteBookingModal.initialBooking) {
+      deleteMutation.mutate();
+    }
+  };
+
+  return (
+    <>
+      <div className="space-y-8 mt-3">
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Calendar className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl font-bold text-elegant">Bookings</h1>
+          </div>
           {isPending ? (
-            <BookingCardSkeleton />
-          ) : data ? (
-            data.map((booking) => (
-              <BookingCard key={booking._id} booking={booking} />
-            ))
+            <div className="w-full flex items-center justify-center">
+              <Skeleton className="w-1/5 h-3" />
+            </div>
+          ) : datas ? (
+            <p className="text-lg text-muted-foreground">
+              {datas.length > 0
+                ? `You have ${datas?.length} booking${
+                    datas?.length !== 1 ? "s" : ""
+                  }`
+                : "No bookings yet. Start by browsing our available rooms!"}
+            </p>
           ) : null}
         </div>
+
+        <div className="flex justify-center mb-6">
+          <Select
+            value={filterType}
+            onValueChange={(value: "all" | "my") => setFilterType(value)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select filter" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Bookings</SelectItem>
+              <SelectItem value="my">My Bookings</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {!isPending && datas.length === 0 ? (
+          <div className="text-center py-16">
+            <Building2 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-elegant mb-2">
+              No bookings found
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              Ready to plan your stay? Browse our beautiful rooms and make your
+              first reservation.
+            </p>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
+            >
+              <Building2 className="h-4 w-4" />
+              View Available Rooms
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isPending ? (
+              <BookingCardSkeleton count={6} />
+            ) : datas ? (
+              datas.map((booking) => (
+                <BookingCard key={booking._id} booking={booking} />
+              ))
+            ) : null}
+          </div>
+        )}
+      </div>
+      {deleteBookingModal.open && datas && (
+        <DeleteBookingModal
+          loading={deleteMutation.isPending}
+          onDelete={handleDelete}
+        />
       )}
-    </div>
+    </>
   );
 };
 
@@ -79,6 +153,7 @@ export default BookingsPage;
 
 function BookingCard({ booking }: { booking: IBooking }) {
   const { data: session } = useSession();
+  const { setOpen, setInitialBooking } = useDeleteBooking();
   return (
     <Card
       key={booking._id}
@@ -91,32 +166,35 @@ function BookingCard({ booking }: { booking: IBooking }) {
               {booking.room.name}
             </CardTitle>
             {session?.currentUser._id === booking.user._id && (
-              <Badge variant="destructive" className="cursor-pointer">
+              <Badge
+                onClick={() => {
+                  setInitialBooking(booking);
+                  setOpen(true);
+                }}
+                variant="destructive"
+                className="cursor-pointer"
+              >
                 Cancel
               </Badge>
             )}
           </div>
         </CardHeader>
-
         <CardContent className="space-y-4">
           <div className="flex items-center gap-2 text-muted-foreground">
             <User className="h-4 w-4" />
             <span className="text-sm font-medium">
               {booking.user.fullName}
-
               {booking.user._id === session?.currentUser._id && (
                 <span className="text-muted-foreground">(You)</span>
               )}
             </span>
           </div>
-
           <div className="flex items-center gap-2 text-luxury font-semibold">
             <Calendar className="h-4 w-4" />
             <span className="text-sm">
               {format(new Date(booking.date), "dd-MM-yyyy")}
             </span>
           </div>
-
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="h-4 w-4" />
             <span className="text-xs">
@@ -125,7 +203,6 @@ function BookingCard({ booking }: { booking: IBooking }) {
           </div>
         </CardContent>
       </div>
-
       <div className="px-6 pt-2 pb-4 border-t border-border">
         <p className="text-xs text-muted-foreground">
           Capacity: {booking.room.capacity} people • ${booking.room.price}/night

@@ -5,19 +5,40 @@ import { connectToDatabase } from "@/lib/mongoose";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const bookings = await bookingModel
-      .find()
-      .populate({
-        path: "user",
-        select: "fullName",
-      })
-      .populate({
-        path: "room",
-        select: "name capacity price",
-      });
-    return NextResponse.json(bookings);
+    const url = new URL(request.url);
+    const filter = url.searchParams.get("filter");
+    if (filter === "own") {
+      const session = await getServerSession(authOptions);
+      if (!session?.currentUser) {
+        return NextResponse.json({ error: "Unauthenticated" }, { status: 403 });
+      }
+
+      const bookings = await bookingModel
+        .find({ user: session.currentUser._id })
+        .populate({
+          path: "user",
+          select: "fullName",
+        })
+        .populate({
+          path: "room",
+          select: "name capacity price",
+        });
+      return NextResponse.json(bookings, { status: 200 });
+    } else {
+      const bookings = await bookingModel
+        .find()
+        .populate({
+          path: "user",
+          select: "fullName",
+        })
+        .populate({
+          path: "room",
+          select: "name capacity price",
+        });
+      return NextResponse.json(bookings, { status: 200 });
+    }
   } catch (error) {
     console.error(error);
     return NextResponse.json(
