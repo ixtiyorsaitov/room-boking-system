@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center" id="title">Room Booking System</h1>
 
-## Getting Started
+<p align="center"><img src="https://i.ibb.co/rK4dZQ1F/New-Tech-Futuristic-Purple-and-Yellow-Youtube-Thumbnail.png" alt="project-image"></p>
 
-First, run the development server:
+<p id="description">Mini Room Booking System — A lightweight full-stack web application for managing room reservations. Built with Next.js (App Router) and MongoDB it allows users to view rooms make bookings for specific dates and see all existing bookings. The UI is styled using TailwindCSS and ShadCN UI. Ideal for small-scale projects or learning full-stack deve</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+<h2>🚀 Demo</h2>
+
+[https://room-boking-system-ixtiyor.vercel.app](https://room-boking-system-ixtiyor.vercel.app)
+
+<h2>Project Screenshots:</h2>
+
+<img src="https://i.ibb.co/ZpFkxnfp/Screenshot-2025-08-06-154333.png" alt="project-screenshot" width="1000" height="400/">
+
+  
+  
+<h2>🧐 Features</h2>
+
+Here're some of the project's best features:
+
+*   🧑‍💼 User Authentication – Secure sign-in and sign-up system for users.
+*   🏨 Room Listings – Browse available rooms with details like price capacity and description.
+*   📅 Room Booking by Date – Users can select a specific day to book a room.
+*   ⏳ Booking Expiration – Unconfirmed bookings auto-expire after a certain time.
+*   📂 User-Specific Bookings – Filter and view only your own bookings.
+*   ❌ Cancel Booking – Easily delete your bookings via a confirmation modal.
+*   🔍 View All Bookings – Admins (or users) can see all booked rooms and their dates.
+*   📦 Clean Folder Structure – Well-organized codebase for maintainability and scalability.
+
+<h2>🛠️ Installation Steps:</h2>
+
+<p>1. Clone or download this repository</p>
+
+<p>2. Make sure node.js is installed</p>
+
+<p>3. Install modules</p>
+
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<p>4. Create .env file in project foler</p>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<p>5. Add properties in .env file</p>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+cooasmdlaksd
+```
 
-## Learn More
+<p>6. Run project</p>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+npm run dev
+```
