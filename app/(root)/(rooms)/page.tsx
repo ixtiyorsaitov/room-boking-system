@@ -1,6 +1,6 @@
 "use client";
 
-import RoomCard from "@/components/core/room-card";
+import RoomCard, { RoomCardSkeleton } from "@/components/core/room-card";
 import BookingModal from "@/components/modals/booking.modal";
 import api from "@/lib/axios";
 import { MockRooms } from "@/lib/constants";
@@ -35,7 +35,6 @@ const BookingsPage = () => {
         ...values,
         roomId: selectedRoom?._id,
       });
-      console.log(response);
 
       return response;
     },
@@ -64,7 +63,6 @@ const BookingsPage = () => {
     queryFn: async () => {
       const { data: response } = await api.get("/rooms");
       setRooms(response);
-      console.log(response);
 
       return response;
     },
@@ -85,7 +83,7 @@ const BookingsPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isPending ? (
-          <>Loading...</>
+          <RoomCardSkeleton />
         ) : (
           rooms.map((room) => (
             <RoomCard onBook={handleBook} key={room._id} room={room} />

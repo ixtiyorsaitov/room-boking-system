@@ -10,6 +10,7 @@ import { Users, DollarSign } from "lucide-react";
 import { IRoom } from "@/types";
 import { useSession } from "next-auth/react";
 import { useAuthModal } from "@/hooks/use-auth-modal";
+import { Skeleton } from "../ui/skeleton";
 
 interface RoomCardProps {
   room: IRoom;
@@ -70,3 +71,43 @@ const RoomCard = ({ room, onBook }: RoomCardProps) => {
 };
 
 export default RoomCard;
+
+export function RoomCardSkeleton({ count = 6 }: { count?: number }) {
+  return Array.from({ length: count }).map((_, i) => (
+    <Card
+      key={i}
+      className="h-full flex flex-col justify-between transition-all duration-200 hover:shadow-[var(--shadow-elegant)] hover:-translate-y-1 bg-card"
+    >
+      <div className="flex-1">
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-elegant text-lg line-clamp-2">
+              <Skeleton className="h-6 w-3/4" />
+            </CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Users className="h-4 w-4" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Users className="h-4 w-4" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+          <div className="flex items-center gap-2 text-luxury font-semibold">
+            <DollarSign className="h-5 w-5" />
+            <Skeleton className="h-5 w-1/2" />
+          </div>
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-5/6" />
+          </p>
+        </CardContent>
+      </div>
+      <CardFooter>
+        <Skeleton className="w-full h-10" />
+      </CardFooter>
+    </Card>
+  ));
+}
