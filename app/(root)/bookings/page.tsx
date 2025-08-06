@@ -24,7 +24,7 @@ import { toast } from "sonner";
 
 const BookingsPage = () => {
   const deleteBookingModal = useDeleteBooking();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [datas, setDatas] = useState<IBooking[]>([]);
 
   const [filterType, setFilterType] = useState<"all" | "my">("all");
@@ -94,20 +94,22 @@ const BookingsPage = () => {
           ) : null}
         </div>
 
-        <div className="flex justify-center mb-6">
-          <Select
-            value={filterType}
-            onValueChange={(value: "all" | "my") => setFilterType(value)}
-          >
-            <SelectTrigger className="w-full border">
-              <SelectValue placeholder="Select filter" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Bookings</SelectItem>
-              <SelectItem value="my">My Bookings</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {status === "authenticated" && (
+          <div className="flex justify-center mb-6">
+            <Select
+              value={filterType}
+              onValueChange={(value: "all" | "my") => setFilterType(value)}
+            >
+              <SelectTrigger className="w-full border">
+                <SelectValue placeholder="Select filter" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Bookings</SelectItem>
+                <SelectItem value="my">My Bookings</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {!isPending && datas.length === 0 ? (
           <div className="text-center py-16">
