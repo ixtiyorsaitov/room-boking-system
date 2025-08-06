@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { IRoom } from "@/types";
 import bookingModel from "@/database/booking.model";
 import roomModel from "@/database/room.model";
+import { authOptions } from "@/lib/auth-options";
+import { getServerSession } from "next-auth";
+import { ROLE } from "@/types/role";
 
 export async function GET(
   req: NextRequest,
@@ -29,6 +32,13 @@ export async function PUT(
     const { roomId } = await params;
     const body = await req.json();
     const data = body as IRoom;
+    const session = await getServerSession(authOptions);
+    if (!session?.currentUser) {
+      return NextResponse.json({ error: "Unauthenticated" }, { status: 403 });
+    }
+    if (session.currentUser.role !== ROLE.ADMIN) {
+      return NextResponse.json({ error: "Not allowed" }, { status: 405 });
+    }
     const updatedRoom = await roomModel.findByIdAndUpdate(
       roomId,
       {
