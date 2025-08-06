@@ -32,13 +32,13 @@ Here're some of the project's best features:
 Here're some of the project's api endpoints:
 
 * GET ```/rooms``` - get all rooms
-*  – Browse available rooms with details like price capacity and description.
-*  – Users can select a specific day to book a room.
-*  – Unconfirmed bookings auto-expire after a certain time.
-*  – Filter and view only your own bookings.
-*  – Easily delete your bookings via a confirmation modal.
-*  – Admins (or users) can see all booked rooms and their dates.
-*   📦 Clean Folder Structure – Well-organized codebase for maintainability and scalability.
+* DELETE – ```/rooms/[roomId]``` - get room by room id
+* PUT – ```/rooms/[roomId]``` - update room for admin panel
+* DELETE – ```/rooms/[roomId]``` - delete room for admin panel
+* GET ```/bookings``` - get all bookings
+* GET ```/bookings?filter=own``` - get bookings of user
+* POST ```/bookings``` - create new booking
+* DELETE – ```/bookings/[bookingId]``` - delete booking
 
 <h2>🛠️ Installation Steps:</h2>
 
