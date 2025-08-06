@@ -16,11 +16,10 @@ export interface IRoom {
   description: string;
 }
 
-export interface Booking {
-  id: string;
-  roomId: string;
-  roomName: string;
-  customerName: string;
+export interface IBooking {
+  _id: string;
+  user: IUser;
+  room: IRoom;
   date: string;
   createdAt: string;
 }

@@ -1,8 +1,8 @@
 import { connectToDatabase } from "@/lib/mongoose";
-import Room from "@/database/room.model";
 import { NextRequest, NextResponse } from "next/server";
 import { IRoom } from "@/types";
 import bookingModel from "@/database/booking.model";
+import roomModel from "@/database/room.model";
 
 export async function GET(
   req: NextRequest,
@@ -11,7 +11,7 @@ export async function GET(
   try {
     await connectToDatabase();
     const { roomId } = await params;
-    const room = await Room.findById(roomId);
+    const room = await roomModel.findById(roomId);
     if (!room) {
       return NextResponse.json({ error: "Room not found" }, { status: 404 });
     }
@@ -29,7 +29,7 @@ export async function PUT(
     const { roomId } = await params;
     const body = await req.json();
     const data = body as IRoom;
-    const updatedRoom = await Room.findByIdAndUpdate(
+    const updatedRoom = await roomModel.findByIdAndUpdate(
       roomId,
       {
         name: data.name,
@@ -61,7 +61,7 @@ export async function DELETE(
 
     await bookingModel.deleteMany({ room: roomId });
 
-    await Room.findByIdAndDelete(roomId);
+    await roomModel.findByIdAndDelete(roomId);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

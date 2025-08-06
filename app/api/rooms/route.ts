@@ -1,8 +1,8 @@
 import { connectToDatabase } from "@/lib/mongoose";
-import Room from "@/database/room.model";
 import { NextRequest, NextResponse } from "next/server";
 import { IRoom } from "@/types";
 import bookingModel from "@/database/booking.model";
+import roomModel from "@/database/room.model";
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type");
 
     if (type === "additionDatas") {
-      const rooms = await Room.find();
+      const rooms = await roomModel.find();
 
       const roomsWithBookings = await Promise.all(
         rooms.map(async (room) => {
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json(roomsWithBookings);
     } else {
-      const rooms = await Room.find();
+      const rooms = await roomModel.find();
       return NextResponse.json(rooms);
     }
   } catch (error) {
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const data = body as IRoom;
 
-    const newRoom = await Room.create({
+    const newRoom = await roomModel.create({
       name: data.name,
       capacity: data.capacity,
       price: data.price,

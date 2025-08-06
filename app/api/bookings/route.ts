@@ -5,6 +5,28 @@ import { connectToDatabase } from "@/lib/mongoose";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET() {
+  try {
+    const bookings = await bookingModel
+      .find()
+      .populate({
+        path: "user",
+        select: "fullName",
+      })
+      .populate({
+        path: "room",
+        select: "name capacity price",
+      });
+    return NextResponse.json(bookings);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
