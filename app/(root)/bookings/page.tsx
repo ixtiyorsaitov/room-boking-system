@@ -99,7 +99,7 @@ const BookingsPage = () => {
             value={filterType}
             onValueChange={(value: "all" | "my") => setFilterType(value)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full border">
               <SelectValue placeholder="Select filter" />
             </SelectTrigger>
             <SelectContent>

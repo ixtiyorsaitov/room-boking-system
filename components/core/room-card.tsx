@@ -99,10 +99,10 @@ export function RoomCardSkeleton({ count = 6 }: { count?: number }) {
             <DollarSign className="h-5 w-5" />
             <Skeleton className="h-5 w-1/2" />
           </div>
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <div className="text-sm text-muted-foreground line-clamp-2">
             <Skeleton className="h-4 w-full" />
             <Skeleton className="h-4 w-5/6" />
-          </p>
+          </div>
         </CardContent>
       </div>
       <CardFooter>

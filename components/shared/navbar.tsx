@@ -2,7 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Building2, Calendar, Home, LogOut, Settings } from "lucide-react";
+import {
+  Building2,
+  Calendar,
+  Home,
+  LogOut,
+  LogOutIcon,
+  Menu,
+  Settings,
+} from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -107,6 +115,53 @@ const Navbar = () => {
           ) : (
             <Button onClick={() => authModal.setOpen(true)}>Login</Button>
           )}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                className="flex md:hidden"
+                variant={"ghost"}
+                size={"icon"}
+              >
+                <Menu />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Menu</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/"
+                  className={cn(
+                    "items-center gap-2",
+                    pathname === "/" && "bg-muted text-primary"
+                  )}
+                >
+                  <Home className="h-4 w-4" />
+                  Rooms
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  href="/bookings"
+                  className={cn(
+                    "items-center gap-2",
+                    pathname === "/bookings" && "bg-muted text-primary"
+                  )}
+                >
+                  <Calendar className="h-4 w-4" />
+                  Bookings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => signOut()}
+                variant={"destructive"}
+              >
+                <LogOutIcon />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
