@@ -223,7 +223,6 @@ function BookingCardSkeleton({ count = 6 }: { count?: number }) {
         <CardHeader>
           <div className="flex justify-between items-start">
             <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="h-5 w-20 rounded-full" />
           </div>
         </CardHeader>
         <CardContent className="space-y-4">

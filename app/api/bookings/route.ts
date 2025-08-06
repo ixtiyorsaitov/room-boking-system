@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   try {
+    await connectToDatabase();
     const url = new URL(request.url);
     const filter = url.searchParams.get("filter");
     if (filter === "own") {
