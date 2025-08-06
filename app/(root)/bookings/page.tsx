@@ -8,6 +8,7 @@ import { IBooking } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Building2, Calendar, Clock, User } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { format } from "date-fns";
 import Link from "next/link";
 
 const BookingsPage = () => {
@@ -111,12 +112,16 @@ function BookingCard({ booking }: { booking: IBooking }) {
 
           <div className="flex items-center gap-2 text-luxury font-semibold">
             <Calendar className="h-4 w-4" />
-            <span className="text-sm">15-05-2025</span>
+            <span className="text-sm">
+              {format(new Date(booking.date), "dd-MM-yyyy")}
+            </span>
           </div>
 
           <div className="flex items-center gap-2 text-muted-foreground">
             <Clock className="h-4 w-4" />
-            <span className="text-xs">Booked 12-05-2025</span>
+            <span className="text-xs">
+              Booked {format(new Date(booking.createdAt), "dd-MM-yyyy")}
+            </span>
           </div>
         </CardContent>
       </div>
