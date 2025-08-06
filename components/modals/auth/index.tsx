@@ -6,7 +6,6 @@ import * as z from "zod";
 import { Chrome } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,

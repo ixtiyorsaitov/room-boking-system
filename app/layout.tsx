@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import { ThemeProvider } from "@/components/providers/theme.provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers/providers";
 

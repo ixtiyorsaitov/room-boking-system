@@ -19,7 +19,6 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/axios";
 import { IBooking } from "@/types";
 import { format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
 
 const BookingsList = () => {
   const { data, isPending } = useQuery({

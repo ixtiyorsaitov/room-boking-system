@@ -46,7 +46,6 @@ const BookingsPage = () => {
       const { data: response } = await api.delete(
         `/bookings/${deleteBookingModal.initialBooking?._id}`
       );
-      console.log(response);
 
       return response;
     },

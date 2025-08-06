@@ -1,9 +1,9 @@
 "use client";
 
-import { AlertCircle, Calendar, CheckCircle, User } from "lucide-react";
+import { Calendar, CheckCircle } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IRoom } from "@/types";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { bookingSchema } from "@/lib/validations";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,7 +17,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,

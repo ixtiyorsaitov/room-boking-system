@@ -3,7 +3,6 @@
 import RoomCard, { RoomCardSkeleton } from "@/components/core/room-card";
 import BookingModal from "@/components/modals/booking.modal";
 import api from "@/lib/axios";
-import { MockRooms } from "@/lib/constants";
 import { bookingSchema } from "@/lib/validations";
 import { IRoom } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -48,7 +47,7 @@ const BookingsPage = () => {
     },
     onError: (error) => {
       toast.error("Error with booking room");
-      console.log(error);
+      console.error(error);
     },
   });
 

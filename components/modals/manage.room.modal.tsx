@@ -5,7 +5,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
 import {
@@ -75,7 +74,7 @@ const ManageRoomModal = ({
     } else {
       form.reset({ name: "", capacity: "1", price: "", description: "" });
     }
-  }, [manageRoomModal.initialRoom]);
+  }, [manageRoomModal.initialRoom, form]);
 
   const addRoomMutate = useMutation({
     mutationFn: async (values: z.infer<typeof roomSchema>) => {
@@ -129,7 +128,6 @@ const ManageRoomModal = ({
     } else {
       addRoomMutate.mutate(values);
       form.reset();
-      console.log(values);
     }
   };
 
@@ -243,6 +241,7 @@ export const RoomDeleteModal = ({
       roomDeleteModal.setInitialRoom(null);
       form.reset(); // Reset form fields and errors
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomDeleteModal.open, roomDeleteModal.setOpen, form]);
 
   const deleteMutation = useMutation({
@@ -266,6 +265,7 @@ export const RoomDeleteModal = ({
     },
     onError: (error) => {
       toast.error("Error");
+      console.error(error);
     },
   });
 
@@ -280,23 +280,22 @@ export const RoomDeleteModal = ({
       <AlertDialogContent className="sm:max-w-[425px]">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you absolutely sure you want to delete "
-            {roomDeleteModal.initialRoom.name}"?
+            {`Are you absolutely sure you want to delete "${roomDeleteModal.initialRoom.name}"?`}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the room
+            {`This action cannot be undone. This will permanently delete the room`}
             <span className="font-medium text-foreground">
-              "{roomDeleteModal.initialRoom.name}"
+              {`"${roomDeleteModal.initialRoom.name}"`}
             </span>
-            and remove its associated data from our servers.
+            {"and remove its associated data from our servers."}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <Alert variant="destructive" className="mb-4">
           <Trash2 className="h-4 w-4" />
           <AlertTitle>Permanent Deletion Warning</AlertTitle>
           <AlertDescription>
-            Deleting this room is irreversible. All related content, bookings,
-            and analytics will be lost forever. Please proceed with caution.
+            {`Deleting this room is irreversible. All related content, bookings,
+            and analytics will be lost forever. Please proceed with caution.`}
           </AlertDescription>
         </Alert>
         <Form {...form}>
@@ -307,9 +306,9 @@ export const RoomDeleteModal = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Tasdiqlash uchun, pastga{" "}
+                    {`Tasdiqlash uchun, pastga`}
                     <span className="font-bold text-red-500">{"'DELETE'"}</span>
-                    deb yozing:
+                    {`deb yozing:`}
                   </FormLabel>
                   <FormControl>
                     <Input
