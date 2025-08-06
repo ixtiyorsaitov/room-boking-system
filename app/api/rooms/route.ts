@@ -11,13 +11,13 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type");
 
     if (type === "additionDatas") {
-      const rooms = await Room.find(); // All rooms
+      const rooms = await Room.find();
 
       const roomsWithBookings = await Promise.all(
         rooms.map(async (room) => {
           const bookings = await bookingModel
             .find({ room: room._id })
-            .populate("user", "fullName"); // get user's name
+            .populate("user", "fullName");
 
           return {
             _id: room._id,
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { success: false, error: "Xatolik yuz berdi" },
+      { success: false, error: "Something went wrong" },
       { status: 500 }
     );
   }

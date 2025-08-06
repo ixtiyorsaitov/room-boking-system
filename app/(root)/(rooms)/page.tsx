@@ -6,9 +6,10 @@ import api from "@/lib/axios";
 import { MockRooms } from "@/lib/constants";
 import { bookingSchema } from "@/lib/validations";
 import { IRoom } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Building2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import z from "zod";
 
 const BookingsPage = () => {
@@ -28,8 +29,34 @@ const BookingsPage = () => {
     setBookingSuccess(false);
   };
 
+  const addBookingMutate = useMutation({
+    mutationFn: async (values: z.infer<typeof bookingSchema>) => {
+      const { data: response } = await api.post("/bookings", {
+        ...values,
+        roomId: selectedRoom?._id,
+      });
+      console.log(response);
+
+      return response;
+    },
+    onSuccess: (response) => {
+      if (response.success) {
+        toast.success("Room booked successfuly!");
+        setBookingSuccess(true);
+      } else {
+        toast.error(response.error);
+      }
+    },
+    onError: (error) => {
+      toast.error("Error with booking room");
+      console.log(error);
+    },
+  });
+
   const handleBookingSubmit = (values: z.infer<typeof bookingSchema>) => {
-    setBookingSuccess(true);
+    if (selectedRoom) {
+      addBookingMutate.mutate(values);
+    }
   };
 
   const { isPending } = useQuery({
@@ -71,7 +98,7 @@ const BookingsPage = () => {
           success={bookingSuccess}
           room={selectedRoom}
           open={bookingModalOpen}
-          loading={false}
+          loading={addBookingMutate.isPending}
           setOpen={setBookingModalOpen}
           onSubmit={handleBookingSubmit}
           onCancel={handleCancel}
