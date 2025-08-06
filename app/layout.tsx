@@ -29,7 +29,12 @@ export default function RootLayout({
         className={`${poppins.className} ${poppins.variable} antialiased`}
       >
         <Providers>
-          <NextTopLoader color="hsl(25 75% 55%)" />
+          <div className="dark:hidden">
+            <NextTopLoader color="hsl(25 75% 55%)" />
+          </div>
+          <div className="hidden dark:flex">
+            <NextTopLoader color="hsl(210 40% 98%)" />
+          </div>
           <Toaster />
           {children}
         </Providers>
