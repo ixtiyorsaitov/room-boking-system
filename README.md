@@ -55,5 +55,12 @@ NEXT_PUBLIC_DOMAIN_URI=http://localhost:3000
 <p>6. Run project</p>
 
 ```
+
+<h2>💻 Built with</h2>
+
+Technologies used in the project:
+
+*   Front-end: Next.js React.js Next-auth.js Zustand
+*   Back-end: Next.js MongoDB
 npm run dev
 ```
