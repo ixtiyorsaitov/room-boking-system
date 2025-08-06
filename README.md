@@ -26,6 +26,19 @@ Here're some of the project's best features:
 *   ❌ Cancel Booking – Easily delete your bookings via a confirmation modal.
 *   🔍 View All Bookings – Admins (or users) can see all booked rooms and their dates.
 *   📦 Clean Folder Structure – Well-organized codebase for maintainability and scalability.
+  
+<h2>🚀 Api endpoints</h2>
+
+Here're some of the project's api endpoints:
+
+* GET ```/rooms``` - get all rooms
+*  – Browse available rooms with details like price capacity and description.
+*  – Users can select a specific day to book a room.
+*  – Unconfirmed bookings auto-expire after a certain time.
+*  – Filter and view only your own bookings.
+*  – Easily delete your bookings via a confirmation modal.
+*  – Admins (or users) can see all booked rooms and their dates.
+*   📦 Clean Folder Structure – Well-organized codebase for maintainability and scalability.
 
 <h2>🛠️ Installation Steps:</h2>
 
@@ -44,6 +57,12 @@ npm install
 <p>5. Add properties in .env file</p>
 
 ```
+cooasmdlaksd
+```
+
+<p>6. Run project</p>
+
+```
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID_HERE
 NEXT_PUBLIC_GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_ID_HERE
 NEXT_PUBLIC_NEXTAUTH_JWT_SECRET=YOUR_JWT_SECRET_HERE
@@ -52,15 +71,11 @@ NEXT_PUBLIC_MONGO_URI=YOUR_MONGODB_URL_HERE
 NEXT_PUBLIC_DOMAIN_URI=http://localhost:3000
 ```
 
-<p>6. Run project</p>
-
-```
-
+  
+  
 <h2>💻 Built with</h2>
 
 Technologies used in the project:
 
 *   Front-end: Next.js React.js Next-auth.js Zustand
 *   Back-end: Next.js MongoDB
-npm run dev
-```
